@@ -42,6 +42,7 @@
 #define CLSHC_MESSAGE_BANNERTEXT    "import" // Update Message
 #define CLSHC_MESSAGE_RESTART       "commit" // Restart Application
 #define CLSHC_MESSAGE_SUSPEND       "kill"   // Suspend
+#define CLSHC_MESSAGE_RESUME        "resume" // Resume
 #define CLSHC_MESSAGE_REBOOTSYSTEM  "reboot" // Reboot System
 #define CLSHC_MESSAGE_FWUPDATE      "clean"  // Update Firmware
 
@@ -61,7 +62,7 @@ struct shcapi_mediaitem {
 extern "C" {
 #endif
    extern const char *cLshcapi_getapiversion_alloc();
-   extern int cLshcapi_create(int argc, char **argv, const char *cachedir);
+   extern int cLshcapi_create(int argc, char **argv, const char *cachedir, const char *iface);
    extern int cLshcapi_delete();
    extern int cLshcapi_setcallback(void *uptr, int cbid, ...);
    extern int cLshcapi_connect(const char *targethost, int cache);

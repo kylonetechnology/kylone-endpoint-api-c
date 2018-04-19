@@ -23,8 +23,11 @@
 #include <stdio.h>  //printf
 #include <stdlib.h> //free
 #include <string.h> //strcmp
+#include <signal.h>
 
 #include <cLshcapi.h>
+
+static int app_signal_issued = 0;
 
 struct shcapi_mediaitem *app_new_media_item(const char *url)
 {
@@ -122,13 +125,16 @@ static void app_remotemessageCB(const char *msg, void *userptr)
 {
    printf("~ got remote message: %s\n", msg);
    if (strcmp(msg, CLSHC_MESSAGE_BANNERTEXT) == 0) {
-      printf("  update header text: %s\n", cLshcapi_getbannertext());
+      printf("  update header text: '%s'\n", cLshcapi_getbannertext());
    } else
    if (strcmp(msg, CLSHC_MESSAGE_RESTART) == 0) {
       printf("  app restart\n");
    } else
    if (strcmp(msg, CLSHC_MESSAGE_SUSPEND) == 0) {
       printf("  app suspend\n");
+   } else
+   if (strcmp(msg, CLSHC_MESSAGE_RESUME) == 0) {
+      printf("  app resume\n");
    } else
    if (strcmp(msg, CLSHC_MESSAGE_REBOOTSYSTEM) == 0) {
       printf("  sys reboot\n");
@@ -290,17 +296,37 @@ int app_terminate(int retcode)
    return retcode;
 }
 
+static void breakhandler(int sig)
+{
+   printf(" signal\n");
+   app_signal_issued = 1;
+}
+
 int main(int argc, char** argv)
 {
-   const char *targethost = "10.72.0.2";
+   int docache = SHC_OPT_DOCACHE;
+   const char *targethost = (const char *) 0;
+
+   if (argc < 2) {
+      printf("Usage: %s <targethost> [cache]\n", argv[0]);
+      printf("cache can be 1 or 0, will do or wont do cache respectively (default 1)\n\n");
+      return 1;
+   } else {
+      targethost = argv[1];
+      if (argc > 2) {
+         if (argv[2][0] == '0')
+            docache = SHC_OPT_DONOTCACHE;
+      }
+   }
 
    app_print_api_version();
-
+   printf("> target host: %s\n", targethost);
+   printf("  caching is %s\n", docache == SHC_OPT_DOCACHE ? "enabled" : "disabled");
    /*
     * given cache folder should be exists, otherwise cLshcapi_create will return SHC_FAIL
     */
    printf("> creating API\n");
-   if (cLshcapi_create(argc, argv, "/tmp") != SHC_OK) {
+   if (cLshcapi_create(argc, argv, "/tmp", "eth0") != SHC_OK) {
       printf("! unable to create API\n\n");
       return app_terminate(1);
    }
@@ -323,6 +349,11 @@ int main(int argc, char** argv)
    app_wait_connect_thread();
 
    app_example_usage_of_content(targethost);
+
+   printf("> waiting command from the server\n  you may send manually to test it\n  hit ctrl+c when done\n");
+   signal(SIGINT, breakhandler);
+   while (!app_signal_issued)
+      cLshcapi_util_delaymillisecond(500);
 
    return app_terminate(0);
 }
