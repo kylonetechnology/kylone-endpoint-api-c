@@ -6,7 +6,7 @@ Beside accessing and using such data easily while doing development of custom en
 Please check documentation for more information.
 
 ## Requirements
-Kylone Endpoint API for MacOS will support following platforms;
+Kylone Endpoint API for C will support following platforms;
 
 * Starting from MicroCMS v2.0.81
 * Linux, arm-linux-gnueabi, Linaro GCC 4.9-2014.08
