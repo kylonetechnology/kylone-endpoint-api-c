@@ -18,7 +18,7 @@ Kylone Endpoint API for C will support following platforms;
 ## Demo Application
 There is a demo application provided with the API. It is possible to compile using provided script and test the API with demo application like below;
 
-	> ./build.sh make <armv7|aarch64|linux-x86_64|macos>
+	> ./build.sh make <armv7|aarch64|linux-x86_64|macos|csky>
 
 It needs to edited src/Makefile for correct compiler options and library paths for cross compilation.
 Demo application will be placed into bin folder once compiled.
