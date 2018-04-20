@@ -28,6 +28,13 @@ ifeq (${TARGET}, armv7)
   LDLIBS = -lstdc++ -lz -lrt -lnsl -lm
   LDPATH = -L../lib/${TARGET} -L/opt/devel/projects/cLsuite/deps/${TARGET}/lib
 endif
+ifeq (${TARGET}, csky)
+  SYSROOT = /opt/devel/local/api/csky-linux-i386
+  CC = $(SYSROOT)/bin/csky-linux-gcc
+  CFLAGS = --sysroot=$(SYSROOT)/csky-linux/sysroot -Wall -Os -mlittle-endian  -Wpointer-arith -fPIC -I../inc -isystem $(SYSROOT)/include
+  LDLIBS = -lstdc++ -lz
+  LDPATH = -L../lib/${TARGET} -L/opt/devel/projects/cLsuite/deps/csky-linux/lib
+endif
 ifeq (${TARGET}, macos)
   CC = clang
   LDPATH = -L../lib/${TARGET}

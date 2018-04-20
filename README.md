@@ -11,6 +11,7 @@ Kylone Endpoint API for C will support following platforms;
 * Starting from MicroCMS v2.0.81
 * Linux, arm-linux-gnueabi, Linaro GCC 4.9-2014.08
 * Linux, aarch64-linux-gnu, Linaro GCC 4.9-2014.09
+* Linux, csky-linux-gcc, v2.5.01, ABI v1, Build on 20131226, 4.5.1
 * Linux , x86_64-linux-gnu, Linaro GCC 4.9-2014.08
 * MacOS, x86_64-apple-darwin15.6.0, Apple LLVM version 8.0.0
 

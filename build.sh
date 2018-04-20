@@ -43,6 +43,7 @@ function do_compile() {
       echo "Suppoted targets;"
       echo "  armv7"
       echo "  aarch64"
+      echo "  csky"
       echo "  linux-x86_64"
       echo "  macos"
       echo
