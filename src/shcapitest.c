@@ -231,6 +231,29 @@ void app_example_usage_of_content(const char *targethost)
       cat = cLshcapi_node_next(cat);
    }
    printf("- done\n");
+
+   printf("> fetching tokenized URL of first item in first movie category;\n");
+   cat = cLshcapi_content_categories("movie");
+   while (cat != (void *) 0) {
+      item = cLshcapi_node_childfirst(cat);
+      while (item != (void *) 0) {
+         const char *uuid = cLshcapi_item_attribute(item, "uuid");
+         const char *src = cLshcapi_item_attribute(item, "src");
+         const char *token = cLshcapi_drmtokenize_alloc(src, uuid);
+         pstr = cLshcapi_item_attribute(item, "txt");
+         printf("    tokenized URL of item '%s' is '%s'\n", pstr, token);
+         free((void *)token);
+         // only fist item is processed.
+         break;
+         // continue to process next item
+         item = cLshcapi_node_next(item);
+      }
+      // only fist category is processed.
+      break;
+      cat = cLshcapi_node_next(cat);
+   }
+   printf("- done\n");
+
 }
 
 int app_set_callback_functions()

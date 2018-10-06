@@ -87,6 +87,9 @@ extern "C" {
    extern const char *cLshcapi_item_attribute(void *item, const char *tag);
    extern void cLshcapi_util_delaymillisecond(long ms);
    extern struct shcapi_mediaitem *cLshcapi_getcoverart(const char *targethost, const char *mediabasepath);
+   extern const char *cLshcapi_drmquery_alloc(const char *qsys, const char *qtyp, const char *qmeth, const char *qpmid, const char *quuid, const char *qcode);
+   extern const char *cLshcapi_drmquerydescr();
+   extern const char *cLshcapi_drmtokenize_alloc(const char *src, const char *uuid);
 #ifdef __cplusplus
 }
 #endif
